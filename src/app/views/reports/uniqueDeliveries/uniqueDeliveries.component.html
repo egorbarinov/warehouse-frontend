@@ -1,0 +1,61 @@
+<div class="content">
+    <div>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title ">Отчет по уникальным поставкам</h4>
+            <p class="card-category"></p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+
+              <mat-form-field appearance="fill">
+                <mat-label>Выберите интервал</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="От">
+                  <input matEndDate formControlName="end" placeholder="До">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+
+                <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Недопустимая стартовая дата
+                </mat-error>
+                <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Недопустимая конечная дата
+                </mat-error>
+              </mat-form-field>
+
+              <mat-card-actions style="margin-left: 40px; display: inline-block">
+                <button mat-raised-button color="primary"
+                        (click)="send()">
+                  Построить диаграмму
+                </button>
+              </mat-card-actions>
+
+            </div>
+            <div style="margin-top: 40px">
+              <ngx-charts-bar-horizontal *ngIf="deliveriesInRange.length > 0"
+                                       [view]="view"
+                                       [barPadding]="5"
+                                       [scheme]="colorScheme"
+                                       [results]="deliveriesInRange"
+                                       [gradient]="gradient"
+                                       [xAxis]="showXAxis"
+                                       [yAxis]="showYAxis"
+                                       [legend]="showLegend"
+                                       [legendTitle]="legendTitle"
+                                       [showDataLabel]="showDataLabel"
+                                       [showXAxisLabel]="showXAxisLabel"
+                                       [showYAxisLabel]="showYAxisLabel"
+                                       [xAxisLabel]="xAxisLabel"
+                                       [yAxisLabel]="yAxisLabel"
+                                       (select)="onSelect($event)">
+              </ngx-charts-bar-horizontal>
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

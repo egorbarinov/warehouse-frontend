@@ -1,0 +1,43 @@
+<div class="content">
+<h2>Пользователь: {{user.fullName}} </h2>
+<h3>Логин: {{user.username}} </h3>
+
+<form [formGroup]="form">
+
+  <mat-form-field>
+    <mat-label>Имя пользователя (ФИО)</mat-label>
+    <input matInput formControlName="fullName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>E-mail</mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Телефон</mat-label>
+    <input matInput formControlName="phone">
+  </mat-form-field>
+
+    <h3>Бренды: {{getFormattedBrands(user.brands)}}</h3>
+    <h3>Роли в системе: {{getFormattedRoles(user.roles)}}</h3>
+
+  <div>
+    <div class="container" style="width: 60%; display: inline-block">
+      <div class="row">
+        <div class="col-sm">
+          <button mat-raised-button color="primary" (click)="saveProfile()" [disabled]="form.pristine">Сохранить</button>
+        </div>
+        <div class="col-sm">
+          <button mat-raised-button (click)="reset()" [disabled]="form.pristine">Отменить изменения</button>
+        </div>
+        <div class="col-sm">
+          <button mat-raised-button (click)="changePassword()" color="warn">Сменить пароль</button>
+        </div>
+      </div>
+      <button class="btn btn-outline-danger" style="margin-top: 2rem" (click)="logout()">Выйти из системы</button>
+    </div>
+  </div>
+</form>
+
+</div>

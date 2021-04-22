@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Магазин: {{form.value.name}}</h2>
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field>
+    <mat-label>Название магазина</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="form.controls['name'].errors?.required">Укажите название магазина</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Аббревиатура</mat-label>
+    <input matInput formControlName="abbr">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Бренд</mat-label>
+    <mat-select [compareWith]="compareFn" formControlName="brand">
+      <mat-option *ngFor="let brand of allBrands" [value]="brand">{{brand.name}}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['brand'].errors?.required">Укажите бренд</mat-error>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <button mat-raised-button (click)="save()" color="primary" [disabled]="form.invalid">Сохранить</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="close()">Отмена</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="delete()" [hidden]="shop.id == null" color="warn">Удалить</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

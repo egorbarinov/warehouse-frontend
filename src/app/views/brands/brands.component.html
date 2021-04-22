@@ -1,0 +1,51 @@
+<div class="content">
+    <button mat-raised-button (click)="addBrand()" color="primary">Добавить бренд</button>
+    <div>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title ">Бренды</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- # Column -->
+                <ng-container matColumnDef="No">
+                  <mat-header-cell *matHeaderCellDef>№ п/п</mat-header-cell>
+                  <mat-cell *matCellDef="let i = index"> {{i + 1}} </mat-cell>
+                </ng-container>
+
+                <!-- Id Column -->
+                <ng-container matColumnDef="Id">
+                  <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                </ng-container>
+
+                <!-- Brand name Column -->
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef> Наименование</mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <!--Abbr Column -->
+                <ng-container matColumnDef="abbr">
+                  <mat-header-cell *matHeaderCellDef> Аббревиатура</mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.abbr}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="loading">
+                  <mat-footer-cell *matFooterCellDef colspan="0">
+                    Данные загружаются....
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row (click)="editBrand(row)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null && dataSource.data.length!=0}"></mat-footer-row>
+              </mat-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

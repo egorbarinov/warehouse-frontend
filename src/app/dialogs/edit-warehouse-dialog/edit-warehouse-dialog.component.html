@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Склад: {{warehouse.name}}</h2>
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Наименование склада</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Аббревиатура</mat-label>
+    <input matInput formControlName="abbr">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <button mat-raised-button (click)="save()" color="primary" [disabled]="form.invalid">Сохранить</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="close()">Отмена</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="delete()" [hidden]="warehouse.id == null" color="warn">Удалить</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

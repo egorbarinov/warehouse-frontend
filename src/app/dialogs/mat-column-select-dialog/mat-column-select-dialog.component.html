@@ -1,0 +1,23 @@
+<h3>Пожалуйста, выберите столбцы, которые необходимо включить в отчет</h3>
+<div style="display: flex">
+  <div class="col-3 text-left align-self-top">
+    <button mat-raised-button color="primary" (click)="onSelectAll()">Выбрать все</button>
+  </div>
+  <div class="col-3 text-right align-self-top">
+    <button mat-raised-button color="primary" (click)="onReset()">Очистить</button>
+  </div>
+</div>
+<mat-dialog-content>
+  <mat-selection-list #columns [formControl]="selectedColumnsControl" multiple>
+    <mat-list-option *ngFor="let column of selectedColumns" [value]="column" checkboxPosition="before" selected="selected">{{mapColumn(column)}}</mat-list-option>
+  </mat-selection-list>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="col-6 text-right align-self-top">
+    <button mat-raised-button [mat-dialog-close]="selectedColumnsControl.value" color="primary">Ок</button>
+  </div>
+  <div class="col-6 text-left align-self-top">
+    <button mat-raised-button [mat-dialog-close]="false">Отмена</button>
+  </div>
+</mat-dialog-actions>

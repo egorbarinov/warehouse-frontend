@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Пользователь: {{form.value.username}} </h2>
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field>
+    <mat-label>Логин</mat-label>
+    <input matInput formControlName="username">
+    <mat-error *ngIf="form.controls['username'].errors?.required">Укажите логин пользователя</mat-error>
+  </mat-form-field>
+
+  <mat-form-field [hidden]="user.id != null">
+    <mat-label>Пароль</mat-label>
+    <input matInput [required]="user.id == null" type="password" formControlName="password">
+    <mat-error *ngIf="form.controls['password'].errors?.required">Укажите логин пользователя</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Имя пользователя (ФИО)</mat-label>
+    <input matInput formControlName="fullName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>E-mail</mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Телефон</mat-label>
+    <input matInput formControlName="phone">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Роли в системе</mat-label>
+    <mat-select formControlName="roles" [compareWith]="compareFn" multiple>
+      <mat-option *ngFor="let role of allRoles" [value]="role">{{mapRole(role.role)}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field [hidden]="!isBrandManager()">
+    <mat-label>Бренды</mat-label>
+    <mat-select formControlName="brands" [compareWith]="compareFn" multiple>
+      <mat-option *ngFor="let brand of allBrands" [value]="brand">{{brand.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <button mat-raised-button (click)="save()" color="primary" [disabled]="form.invalid">Сохранить</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="close()">Отмена</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="delete()" [hidden]="user.id == null" color="warn">Удалить</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,98 @@
+<div class="content-wrapper">
+  <div class="toolbar-block" *ngIf="_authService.loggedIn()">
+    <mat-toolbar class="topnavbar">
+      <div class="col-8 text-left align-self-top">
+        <button mat-icon-button disableRipple type="button" (click)="toggleMenu()">
+          <mat-icon *ngIf="menuOpened">keyboard_arrow_left</mat-icon>
+          <mat-icon *ngIf="!menuOpened">keyboard_arrow_right</mat-icon>
+        </button>
+        <button class="logo-button" mat-stroked-button disableRipple
+                style="margin-left: 1rem; font-weight: 300; font-size: 16px; border-color: #fff">
+          <mat-icon matListIcon>store</mat-icon>
+          MY WAREHOUSE</button>
+<!--        <h3 style="display: inline-block; margin-left: 1rem; color: #fff; font-weight: 200">MY WAREHOUSE</h3>-->
+      </div>
+      <!--  Помощь, настройки. Пока убрано, так как будет реализовано позже -->
+      <div class="col-4 text-right align-self-top" hidden>
+        <button mat-icon-button class="header-icon">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button class="header-icon">
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+  </div>
+  <div class="all-content">
+    <div class="sidebar" id="sidebar" *ngIf="_authService.loggedIn()"
+         [class.menu-opened]="menuOpened"
+         [class.menu-closed]="!menuOpened">
+      <div>
+        <mat-list>
+          <mat-list-item class="profile-item" *ngIf="_authService.isRouteEnabled('profile')" routerLink="/profile" routerLinkActive="active">
+            <mat-icon matListIcon>person</mat-icon>
+            <h3 matLine>Мой профиль</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('users')" routerLink="/users" routerLinkActive="active">
+            <mat-icon matListIcon>groups</mat-icon>
+            <h3 matLine>Пользователи</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('brands')" routerLink="/brands" routerLinkActive="active">
+            <mat-icon matListIcon>style</mat-icon>
+            <h3 matLine>Бренды</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('shops')" routerLink="/shops" routerLinkActive="active">
+            <mat-icon matListIcon>storefront</mat-icon>
+            <h3 matLine>Магазины</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('warehouses')" routerLink="/warehouses"
+                         routerLinkActive="active">
+            <mat-icon matListIcon>store</mat-icon>
+            <h3 matLine>Склады</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('add-deliveries')" routerLink="/add-deliveries"
+                         routerLinkActive="active">
+            <mat-icon matListIcon>add_box</mat-icon>
+            <h3 matLine>Импорт приходов</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('deliveries')" routerLink="/deliveries"
+                         routerLinkActive="active">
+            <mat-icon matListIcon>local_shipping</mat-icon>
+            <h3 matLine>График приходов</h3>
+          </mat-list-item>
+          <mat-list-item *ngIf="_authService.isRouteEnabled('reports')" [matMenuTriggerFor]="report"
+                         routerLinkActive="active">
+            <mat-icon matListIcon>content_paste</mat-icon>
+            <h3 matLine>Отчеты</h3>
+          </mat-list-item>
+          <mat-menu #report="matMenu">
+            <button class="my-menu-button my-sub-menu" mat-menu-item routerLink="/reports" (click)="onSidenavClose()">
+                  <span>
+                    Отчёт по уникальным поставкам
+                  </span></button>
+            <!--          <button class="my-menu-button" mat-menu-item routerLink="/reports" (click)="onSidenavClose()">-->
+            <!--            <span class="mat-menu-item-submenu-trigger my-sub-menu">-->
+            <!--              Отчёт на будущее...-->
+            <!--            </span></button>-->
+          </mat-menu>
+        </mat-list>
+      </div>
+    </div>
+    <div class="main-content" id="main-content"
+         [class.menu-opened]="menuOpened"
+         [class.menu-closed]="!menuOpened"
+         [class.not-logged]="!_authService.loggedIn()">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+  <div class="footer-block" *ngIf="_authService.loggedIn()">
+    <div class="item-center">
+      &copy; GEAR & CODE, 2021
+    </div>
+    <div class="item-right">
+      <img src="../assets/img/logo3D.png" width="56" alt="GEAR & CODE">
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,45 @@
+/* mat-confirm-dialog (customised dialog) */
+/*.mat-dialog-container {*/
+/*  border-radius: .25em .25em .4em .4em;*/
+/*  margin: 20px;*/
+/*}*/
+
+.mat-selection-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.mat-list-option {
+  width: 25%;
+}
+
+#close-icon {
+  margin-left: auto;
+  order: 2;
+  font-weight: bolder;
+}
+
+#close-icon:hover {
+  cursor: pointer;
+}
+
+#no-button {
+  width: 80%;
+}
+
+#yes-button {
+  width: 80%;
+}
+
+
+span.content-span {
+  padding: 35px 16px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.mat-form-field {
+  display: block;
+}

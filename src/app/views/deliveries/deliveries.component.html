@@ -1,0 +1,150 @@
+<div class="content">
+  <button *ngIf="isAdmin || isBrandManager" mat-raised-button (click)="addDelivery()" class="btn-secondary">
+    <mat-icon>add</mat-icon>
+    Создать приход
+  </button>
+  <mat-form-field class="date-form-field">
+    <mat-label>Выберите интервал дат</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <input matStartDate readonly formControlName="start" placeholder="От">
+      <input matEndDate readonly formControlName="end" placeholder="До" (dateChange)="reloadData()">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Недопустимая стартовая дата</mat-error>
+    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Недопустимая конечная дата</mat-error>
+  </mat-form-field>
+  <mat-checkbox *ngIf="isBrandManager" style="padding-left: 1rem" [(ngModel)]="onlyMyRecords" (change)="applyFilter()">Только мои записи</mat-checkbox>
+  <mat-checkbox *ngIf="isBrandManager" style="padding-left: 1rem" [(ngModel)]="onlyMyBrands" (change)="applyFilter()">Только мои бренды</mat-checkbox>
+  <button mat-raised-button color="primary" style="height: 40px; margin-left: 1rem" (click)="resetFilter()">Сбросить фильтр</button>
+  <button mat-raised-button color="primary" style="height: 40px; margin-left: 1rem" (click)="loadToExcel()">Экспорт в Excel</button>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title ">Приходы</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <mat-table [dataSource]="dataSource" class="mat-elevation-z8 myStyle" matSort>
+            <!-- # Column -->
+            <ng-container matColumnDef="No">
+              <mat-header-cell *matHeaderCellDef>№<br>п/п</mat-header-cell>
+              <mat-cell *matCellDef="let i = index"> {{i + 1}}</mat-cell>
+            </ng-container>
+
+            <!-- Id Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.id}}</mat-cell>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="deliveryDate">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Дата</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.deliveryDate | date:'dd.MM.yyyy'}}</mat-cell>
+            </ng-container>
+
+            <!-- Time Column -->
+            <ng-container matColumnDef="deliveryTime">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Время</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.deliveryTime.deliveryTime}}</mat-cell>
+            </ng-container>
+
+            <!-- Car Info Column -->
+            <ng-container matColumnDef="carInfo">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Авто</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.carInfo}}</mat-cell>
+            </ng-container>
+
+            <!-- Driver Column -->
+            <ng-container matColumnDef="driverInfo">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Водитель</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.driverInfo}}</mat-cell>
+            </ng-container>
+
+            <!-- Brand Column -->
+            <ng-container matColumnDef="brand">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Бренд</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.brand.name}}</mat-cell>
+            </ng-container>
+
+            <!-- Order Column -->
+            <ng-container matColumnDef="orderNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Внутренний<br>заказ</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.orderNumber}}</mat-cell>
+            </ng-container>
+
+            <!-- Delivery Type Column -->
+            <ng-container matColumnDef="deliveryType">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Тип</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{mapDeliveryType(element.deliveryType.type)}}</mat-cell>
+            </ng-container>
+
+            <!-- Sender Column -->
+            <ng-container matColumnDef="sender">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Отправитель</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.sender}}</mat-cell>
+            </ng-container>
+
+            <!-- Comment Column -->
+            <ng-container matColumnDef="comment">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Комментарий</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.comment}}</mat-cell>
+            </ng-container>
+
+            <!-- Shop Column -->
+            <ng-container matColumnDef="shop">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Магазин</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.shop.name}}</mat-cell>
+            </ng-container>
+
+            <!-- Places Column -->
+            <ng-container matColumnDef="numberOfPlaces">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Кол-во<br>мест</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.numberOfPlaces}}</mat-cell>
+            </ng-container>
+
+            <!-- Torg Column -->
+            <ng-container matColumnDef="torgNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Торг-12</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.torgNumber}}</mat-cell>
+            </ng-container>
+
+            <!-- Invoice Column -->
+            <ng-container matColumnDef="invoice">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Счет-<br>фактура</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.invoice}}</mat-cell>
+            </ng-container>
+
+            <!-- Warehouse Column -->
+            <ng-container matColumnDef="warehouse">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Склад</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.warehouse.name}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="0">
+                Данные загружаются....
+              </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nodata">
+              <mat-footer-cell *matFooterCellDef colspan="0">
+                Нет записей
+              </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row (click)="editDelivery(row)" *matRowDef="let row; columns: displayedColumns;"
+                     [class.grayed]="isBrandManager && !isMyBrand(row.brand.id)"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['nodata']"
+                            [ngClass]="{'hide':!(dataSource==null || dataSource.data.length==0)}"></mat-footer-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

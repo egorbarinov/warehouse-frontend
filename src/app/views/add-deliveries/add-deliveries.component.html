@@ -1,0 +1,266 @@
+<div class="content">
+  <div class="col-md-12">
+    <div class="card">
+
+      <div class="card-header card-header-primary" (paste)="data($event)">
+        <h4 class="card-title ">Нажмите левой кнопкой мыши на эту надпись и вставьте Вашу excel таблицу (ctrl +
+          v)</h4>
+      </div>
+
+      <form #copyPasteForm="ngForm" (ngSubmit)="copyPasteForm.form.valid" novalidate>
+        <mat-card>
+          <mat-card-content>
+            <div class="card-body">
+              <div class="table-responsive">
+                <mat-table [dataSource]="pasteTableDataSource" class="myStyleCP">
+                  <ng-container matColumnDef="deliveryDate">
+                    <mat-header-cell *matHeaderCellDef class="text-primary">
+                      Дата
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <input matInput #deliveryDate="ngModel" name="deliveryDate{{rowIdx}}" placeholder="Дата"
+                               [ngModel]="delivery.deliveryDate"
+                               (ngModelChange)="delivery.deliveryDate = $event" [min]="todaysDate"
+                               required [matDatepicker]="picker" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="deliveryDate?.invalid">
+                          <div *ngIf="deliveryDate.errors.required">Укажите корректную дату</div>
+                        </mat-error>
+
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="deliveryTime">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Время
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <mat-select [compareWith]="compareFn" matInput #deliveryTime="ngModel"
+                                    name="deliveryTime{{rowIdx}}"
+                                    placeholder="Время"
+                                    [(ngModel)]="delivery.deliveryTime" required>
+                          <mat-option *ngFor="let time of allTimes" [value]="time">{{time.deliveryTime}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="deliveryTime?.invalid">
+                          <div *ngIf="deliveryTime.errors.required">Укажите корректное время</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="carInfo">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Авто
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <input matInput #carInfo="ngModel" name="carInfo{{rowIdx}}" placeholder="Машина"
+                               [(ngModel)]="delivery.carInfo" required>
+                        <mat-error *ngIf="carInfo?.invalid">
+                          <div *ngIf="carInfo.errors.required">Укажите номер и марку авто</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="driverInfo">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Водитель
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <input matInput #driverInfo="ngModel" name="driverInfo{{rowIdx}}" placeholder="Водитель"
+                               [(ngModel)]="delivery.driverInfo" required>
+                        <mat-error *ngIf="driverInfo?.invalid">
+                          <div *ngIf="driverInfo.errors.required">Укажите данные водителя</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="brand">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Бренд
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <mat-select [compareWith]="compareFn" matInput #brand="ngModel" name="brand{{rowIdx}}"
+                                    placeholder="Время"
+                                    [(ngModel)]="delivery.brand" required>
+                          <mat-option *ngFor="let brand of allBrands" [value]="brand">{{brand.name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="brand?.invalid">
+                          <div *ngIf="brand.errors.required">Укажите корректный бренд</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="orderNumber">
+                    <mat-header-cell *matHeaderCellDef class="text-primary">
+                      Номер заказа
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <input matInput #orderNumber="ngModel" name="orderNumber{{rowIdx}}" placeholder="номер ВЗ"
+                               [(ngModel)]="delivery.orderNumber" required>
+                        <mat-error *ngIf="orderNumber?.invalid">
+                          <div *ngIf="orderNumber.errors.required">Укажите номер ВЗ</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="deliveryType">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Тип
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <mat-select [compareWith]="compareFn" matInput #deliveryType="ngModel" name="deliveryType{{rowIdx}}"
+                                    placeholder="Время"
+                                    [(ngModel)]="delivery.deliveryType" required>
+                          <mat-option *ngFor="let deliveryType of allTypes"
+                                      [value]="deliveryType">{{deliveryType.type}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="deliveryType?.invalid">
+                          <div *ngIf="deliveryType.errors.required">Укажите корректный тип</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="sender">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Поставщик
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+
+                        <input matInput #sender="ngModel" name="sender{{rowIdx}}" placeholder="поставщик"
+                               [(ngModel)]="delivery.sender" required>
+                        <mat-error *ngIf="sender?.invalid">
+                          <div *ngIf="sender.errors.required">Укажите номер ВЗ</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="comment">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Комментарий
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField">
+                        <mat-label></mat-label>
+                        <input matInput name="comment{{rowIdx}}" placeholder="поставщик"
+                               [(ngModel)]="delivery.comment">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="shop">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Магазин
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <mat-select [compareWith]="compareFn" matInput #shop="ngModel" name="shop{{rowIdx}}"
+                                    placeholder="Время"
+                                    [(ngModel)]="delivery.shop" required>
+                          <mat-option *ngFor="let shop of allShops" [value]="shop">{{shop.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="numberOfPlaces">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Кол-во мест
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField">
+                        <mat-label></mat-label>
+                        <input matInput name="numberOfPlaces{{rowIdx}}" placeholder="кол-во мест"
+                               [(ngModel)]="delivery.numberOfPlaces">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="torgNumber">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Торг-12
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField">
+                        <mat-label></mat-label>
+                        <input matInput name="torgNumber{{rowIdx}}" placeholder="кол-во мест"
+                               [(ngModel)]="delivery.torgNumber">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="invoice">
+                    <mat-header-cell *matHeaderCellDef class=" text-primary">
+                      Счет-фактура
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField">
+                        <mat-label></mat-label>
+                        <input matInput name="invoice{{rowIdx}}" placeholder="счёт-фактура"
+                               [(ngModel)]="delivery.invoice">
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="warehouse">
+                    <mat-header-cell *matHeaderCellDef class="text-primary">
+                      Склад
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let delivery; let rowIdx = index;">
+                      <mat-form-field class="myCopyPasteField" hideRequiredMarker>
+                        <mat-label></mat-label>
+                        <mat-select [compareWith]="compareFn" matInput #warehouse="ngModel" name="warehouse{{rowIdx}}"
+                                    placeholder="Склад"
+                                    [(ngModel)]="delivery.warehouse" required>
+                          <mat-option *ngFor="let warehouse of allWarehouses" [value]="warehouse">
+                            {{warehouse.name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="warehouse?.invalid">
+                          <div *ngIf="warehouse.errors.required">Укажите корректный тип</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="pasteTableDisplayedColumns"></mat-header-row>
+                  <mat-row class="table-row" *matRowDef="let row; columns: pasteTableDisplayedColumns; let i = index;">
+                  </mat-row>
+                </mat-table>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" [disabled]="copyPasteForm.invalid"
+                    (click)="send(copyPasteForm);">
+              Отправить
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>

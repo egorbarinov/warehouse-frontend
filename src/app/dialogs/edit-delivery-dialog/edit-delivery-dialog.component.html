@@ -1,0 +1,118 @@
+<h2 mat-dialog-title style="display: inline-block" [hidden]="delivery.id == null">Приход № {{delivery.id}} </h2>
+<h3 mat-dialog-title style="display: inline-block; margin-left: 3rem" [hidden]="delivery.user == null">Создан пользователем: {{delivery.user.fullName}} </h3>
+<mat-dialog-content [formGroup]="form" style="padding: 0 !important;">
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <div class="controls-container">
+        <mat-form-field>
+          <mat-label>Дата</mat-label>
+          <input matInput formControlName="deliveryDate" [matDatepicker]="picker" [min]="todaysDate" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Время</mat-label>
+          <mat-select [compareWith]="compareFn" formControlName="deliveryTime">
+            <mat-option *ngFor="let time of allTimes" [value]="time">{{time.deliveryTime}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls['deliveryTime'].errors?.required">Укажите время</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Информация об автомобиле</mat-label>
+          <input matInput formControlName="carInfo">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Информация о водителе</mat-label>
+          <input matInput formControlName="driverInfo">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Бренд</mat-label>
+          <mat-select [compareWith]="compareFn" formControlName="brand">
+            <mat-option *ngFor="let brand of allBrands" [value]="brand">{{brand.name}}</mat-option>
+          </mat-select>
+          <!--        <mat-error *ngIf="form.controls['brand'].errors?.required">Укажите бренд</mat-error>-->
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Номер заказа</mat-label>
+          <input matInput formControlName="orderNumber">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Тип</mat-label>
+          <mat-select [compareWith]="compareFn" formControlName="deliveryType">
+            <mat-option *ngFor="let deliveryType of allTypes" [value]="deliveryType">{{mapDeliveryType(deliveryType.type)}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls['deliveryType'].errors?.required">Укажите тип</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controls-container">
+
+        <mat-form-field>
+          <mat-label>Отправитель</mat-label>
+          <input matInput formControlName="sender">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Комментарий</mat-label>
+          <input matInput formControlName="comment">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Магазин</mat-label>
+          <mat-select [compareWith]="compareFn" formControlName="shop">
+            <mat-option *ngFor="let shop of allShops" [value]="shop">{{shop.name}}</mat-option>
+          </mat-select>
+          <!--        <mat-error *ngIf="form.controls['shop'].errors?.required">Укажите магазин</mat-error>-->
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Количество мест</mat-label>
+          <input matInput formControlName="numberOfPlaces">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>№ Торг-12</mat-label>
+          <input matInput formControlName="torgNumber">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Счет-фактура</mat-label>
+          <input matInput formControlName="invoice">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Склад</mat-label>
+          <mat-select [compareWith]="compareFn" formControlName="warehouse">
+            <mat-option *ngFor="let warehouse of allWarehouses" [value]="warehouse">{{warehouse.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls['warehouse'].errors?.required">Укажите склад</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <button mat-raised-button (click)="save()" color="primary" [disabled]="form.invalid">Сохранить</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="close()">Отмена</button>
+      </div>
+      <div class="col-sm">
+        <button mat-raised-button (click)="delete()" [hidden]="delivery.id == null" color="warn">Удалить</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

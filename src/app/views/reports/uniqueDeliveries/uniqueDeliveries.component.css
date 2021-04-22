@@ -1,0 +1,4 @@
+tbody tr:hover {
+  background: #bea5c1; /* Цвет фона при наведении */
+  cursor: pointer;
+}

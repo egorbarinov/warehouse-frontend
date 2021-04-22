@@ -1,0 +1,63 @@
+.mat-cell,
+.mat-header-cell {
+  display: flex;
+  justify-content: center;
+  padding: 0 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.mat-header-cell {
+  color: #4d0744 !important;
+  font-size: 0.85rem !important;
+}
+
+.mat-cell {
+  font-size: 0.75rem !important;
+}
+
+.myStyleCP {
+  min-width: 1800px;
+  overflow: auto;
+}
+
+/*CopyPasteTable style here down*/
+
+.myCopyPasteField {
+  display: flex;
+  justify-content: center;
+  padding: 0 5px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.mat-column-deliveryDate {
+  flex: 0 0 12% !important;
+}
+
+.mat-column-deliveryTime {
+  flex: 0 0 11% !important;
+}
+
+.mat-column-carInfo {
+  flex: 0 0 8% !important;
+}
+
+.mat-column-driverInfo {
+  flex: 0 0 8% !important;
+}
+
+.mat-column-numberOfPlaces {
+  flex: 0 0 4% !important;
+}
+
+.mat-column-sender {
+  flex: 0 0 10% !important;
+}
+
+.mat-paginator {
+  margin-top: 0.9rem;
+}
+
+
+

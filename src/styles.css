@@ -1,0 +1,84 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/css/material-dashboard.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #000000;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.content {
+  padding-top: 10px;
+  padding-left: 24px;
+}
+
+mat-row:hover {
+  background: #bea5c1; /* Цвет фона при наведении */
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+/* mat-table */
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  font-style: italic;
+}
+
+.mat-header-cell {
+  color: #4d0744 !important;
+  font-size: 1rem !important;
+}
+
+.mat-cell {
+  font-size: 0.9rem !important;
+}
+
+.card {
+  font-size: .8rem !important;
+  line-height: 1em;
+}
+
+.card-body {
+  padding-top: 0.375rem;
+}
+
+.card-header-primary {
+  padding: 8px 16px !important;
+}
+
+.controls-container {
+  width: 100%;
+  padding: 5%;
+}
+
+.controls-container > * {
+  width: 100%;
+}
+
+/*-------------- Snackbar start --------------*/
+.ok-snackbar {
+  align-self: center;
+  background: #2f1c5a;
+  color: white;
+  z-index: 10;
+  opacity: 85%;
+}
+
+.error-snackbar {
+  align-self: center;
+  background: #ea0000;
+  color: white;
+  z-index: 10;
+  opacity: 85%;
+}
+
+/*-------------- Snackbar end --------------*/

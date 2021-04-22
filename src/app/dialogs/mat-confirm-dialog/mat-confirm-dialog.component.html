@@ -1,0 +1,12 @@
+<mat-dialog-content>
+<!--    <mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>-->
+    <span>{{data.message}}</span>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="col-6 text-right align-self-top">
+    <button mat-raised-button id="yes-button" color="warn" [mat-dialog-close]="true">ДА</button>
+  </div>
+  <div class="col-6 text-left align-self-top">
+    <button mat-raised-button id="no-button" color="primary" [mat-dialog-close]="false">НЕТ</button>
+  </div>
+</mat-dialog-actions>

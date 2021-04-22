@@ -1,0 +1,69 @@
+<div class="content">
+  <button mat-raised-button (click)="addUser()" color="primary">Добавить пользователя</button>
+  <div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title ">Пользователи системы</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+              <!-- # Column -->
+              <ng-container matColumnDef="No">
+                <mat-header-cell *matHeaderCellDef> № п/п</mat-header-cell>
+                <mat-cell *matCellDef="let i = index"> {{i + 1}} </mat-cell>
+              </ng-container>
+
+              <!-- Username Column -->
+              <ng-container matColumnDef="username">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Логин</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+              </ng-container>
+
+              <!--FullName Column -->
+              <ng-container matColumnDef="fullName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Ф.И.О.</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.fullName}} </mat-cell>
+              </ng-container>
+
+              <!-- E-mail Column -->
+              <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+              </ng-container>
+
+              <!-- Phone Column -->
+              <ng-container matColumnDef="phone">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Телефон</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+              </ng-container>
+
+              <!-- Brands Column -->
+              <ng-container matColumnDef="brands">
+                <mat-header-cell *matHeaderCellDef>Бренды</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{getFormattedBrands(element.brands)}} </mat-cell>
+              </ng-container>
+
+              <!-- Roles Column -->
+              <ng-container matColumnDef="roles">
+                <mat-header-cell *matHeaderCellDef>Права в системе</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{getFormattedRoles(element.roles)}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="0">
+                  Данные загружаются....
+                </mat-footer-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row (click)="editUser(row)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null && dataSource.data.length!=0}"></mat-footer-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
